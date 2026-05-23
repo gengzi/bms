@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.bms</groupId>
+        <artifactId>bms-modules</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>bms-demo</artifactId>
+
+    <description>
+        demo模块
+    </description>
+
+    <dependencies>
+
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-doc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-sms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-mail</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-idempotent</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-log</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-excel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-ratelimiter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-translation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-sensitive</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-encrypt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-tenant</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bms</groupId>
+            <artifactId>bms-common-websocket</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

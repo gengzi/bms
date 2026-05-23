@@ -1,0 +1,25 @@
+FROM maven:3.9.11-eclipse-temurin-17 AS builder
+
+WORKDIR /workspace
+
+COPY . .
+RUN mvn -DskipTests package
+
+FROM bellsoft/liberica-openjdk-rocky:17.0.16-cds
+
+LABEL maintainer="bms"
+
+RUN mkdir -p /bms/server/logs /bms/server/temp
+
+WORKDIR /bms/server
+
+ENV SERVER_PORT=8080 \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    JAVA_OPTS=""
+
+EXPOSE 8080
+
+COPY --from=builder /workspace/bms-admin/target/bms-admin.jar ./app.jar
+
+ENTRYPOINT ["sh", "-c", "java -Djava.security.egd=file:/dev/./urandom -Dserver.port=${SERVER_PORT} -XX:+HeapDumpOnOutOfMemoryError ${JAVA_OPTS} -jar app.jar"]

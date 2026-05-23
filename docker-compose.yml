@@ -1,0 +1,122 @@
+name: bms-test
+
+services:
+  mysql:
+    image: mysql:8.0.42
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bms
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+      - --explicit_defaults_for_timestamp=true
+      - --lower_case_table_names=1
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./script/sql/bms_vue_5.X.sql:/docker-entrypoint-initdb.d/01-bms-vue.sql:ro
+      - ./script/sql/bms_job.sql:/docker-entrypoint-initdb.d/02-bms-job.sql:ro
+      - ./script/sql/bms_workflow.sql:/docker-entrypoint-initdb.d/03-bms-workflow.sql:ro
+      - ./script/docker/init/04-docker-overrides.sql:/docker-entrypoint-initdb.d/04-docker-overrides.sql:ro
+      - ./script/docker/mysql/conf.d/charset.cnf:/etc/mysql/conf.d/charset.cnf:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks:
+      - bms-net
+
+  redis:
+    image: redis:7.2.8
+    environment:
+      TZ: Asia/Shanghai
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    volumes:
+      - redis-data:/data
+      - ./script/docker/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "bms123", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks:
+      - bms-net
+
+  minio:
+    image: pgsty/minio:RELEASE.2026-02-14T12-00-00Z
+    environment:
+      TZ: Asia/Shanghai
+      MINIO_ROOT_USER: bms
+      MINIO_ROOT_PASSWORD: bms12345
+      MINIO_COMPRESS: "off"
+      MINIO_COMPRESS_EXTENSIONS: ""
+      MINIO_COMPRESS_MIME_TYPES: ""
+    command: server --address ":9000" --console-address ":9001" /data
+    ports:
+      - "127.0.0.1:19000:9000"
+      - "127.0.0.1:19001:9001"
+    volumes:
+      - minio-data:/data
+      - minio-config:/root/.minio
+    networks:
+      - bms-net
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      "until mc alias set local http://minio:9000 bms bms12345; do sleep 2; done &&
+       mc mb -p local/bms || true &&
+       mc anonymous set download local/bms"
+    networks:
+      - bms-net
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      TZ: Asia/Shanghai
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SNAIL_JOB_PORT: 28080
+      JAVA_OPTS: "-Xms512m -Xmx1024m"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    volumes:
+      - backend-logs:/bms/server/logs
+      - backend-temp:/bms/server/temp
+    networks:
+      - bms-net
+
+  frontend:
+    build:
+      context: ./bms-ui
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:18080:80"
+    depends_on:
+      - backend
+    networks:
+      - bms-net
+
+networks:
+  bms-net:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  redis-data:
+  minio-data:
+  minio-config:
+  backend-logs:
+  backend-temp:

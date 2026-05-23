@@ -1,0 +1,10 @@
+.git
+.idea
+.run
+target
+**/target
+bms-ui
+node_modules
+dist
+logs
+*.log

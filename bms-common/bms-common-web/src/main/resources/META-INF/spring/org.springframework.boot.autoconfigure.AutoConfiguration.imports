@@ -1,0 +1,5 @@
+com.bms.common.web.config.CaptchaConfig
+com.bms.common.web.config.FilterConfig
+com.bms.common.web.config.I18nConfig
+com.bms.common.web.config.ResourcesConfig
+com.bms.common.web.config.UndertowConfig

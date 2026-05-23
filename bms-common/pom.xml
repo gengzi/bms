@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>bms</artifactId>
+        <groupId>com.bms</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>bms-common-bom</module>
+        <module>bms-common-social</module>
+        <module>bms-common-core</module>
+        <module>bms-common-doc</module>
+        <module>bms-common-excel</module>
+        <module>bms-common-idempotent</module>
+        <module>bms-common-job</module>
+        <module>bms-common-log</module>
+        <module>bms-common-mail</module>
+        <module>bms-common-mybatis</module>
+        <module>bms-common-oss</module>
+        <module>bms-common-ratelimiter</module>
+        <module>bms-common-redis</module>
+        <module>bms-common-satoken</module>
+        <module>bms-common-security</module>
+        <module>bms-common-sms</module>
+        <module>bms-common-web</module>
+        <module>bms-common-translation</module>
+        <module>bms-common-sensitive</module>
+        <module>bms-common-json</module>
+        <module>bms-common-encrypt</module>
+        <module>bms-common-tenant</module>
+        <module>bms-common-websocket</module>
+        <module>bms-common-sse</module>
+    </modules>
+
+    <artifactId>bms-common</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        common 通用模块
+    </description>
+
+</project>

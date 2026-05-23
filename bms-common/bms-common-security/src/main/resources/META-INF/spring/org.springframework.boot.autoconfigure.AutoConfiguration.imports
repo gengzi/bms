@@ -1,0 +1,2 @@
+com.bms.common.security.handler.AllUrlHandler
+com.bms.common.security.config.SecurityConfig
